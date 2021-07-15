@@ -1,0 +1,51 @@
+[]
+
+{%-assignlib_dir="res://../lib"
+-%}[general]singleton=false
+load_once=true
+symbol_prefix="godot_"
+reloadable=true
+lib_dir="res://../lib"
+
+[entry]
+
+#Android.arm64-v8a="{{lib_dir}}/aarch64-linux-android/lib{{crate_name}}.so"
+#Android.armeabi-v7a="{{lib_dir}}/armv7-linux-androideabi/lib{{crate_name}}.so"
+#Android.x86="{{lib_dir}}/i686-linux-android/lib{{crate_name}}.so"
+#Android.x86_64="{{lib_dir}}/x86_64-linux-android/lib{{crate_name}}.so"
+#iOS.arm64="{{lib_dir}}/aarch64-apple-ios/lib{{crate_name}}.a"
+#OSX.64="{{lib_dir}}/x86_64-apple-darwin/lib{{crate_name}}.dylib"
+#Server.32="{{lib_dir}}/i686-unknown-linux-gnu/lib{{crate_name}}.so"
+#Server.64="{{lib_dir}}/x86_64-unknown-linux-gnu/lib{{crate_name}}.so"
+#Windows.32="{{lib_dir}}/i686-pc-windows-gnu/{{crate_name}}.dll"
+#Windows.32="{{lib_dir}}/i686-pc-windows-msvc/{{crate_name}}.dll"
+#Windows.64="{{lib_dir}}/x86_64-pc-windows-gnu/{{crate_name}}.dll"
+#Windows.64="{{lib_dir}}/x86_64-pc-windows-msvc/{{crate_name}}.dll"
+#X11.32="{{lib_dir}}/i686-unknown-linux-gnu/lib{{crate_name}}.so"
+#X11.64="{{lib_dir}}/x86_64-unknown-linux-gnu/lib{{crate_name}}.so"
+
+X11.64="res://../target/debug/libhothic.so"
+OSX.64="res://../target/debug/libhothic.dylib"
+Windows.64="res://../target/debug/hothic.dll"
+
+[dependencies]
+
+Android.arm64-v8a=[  ]
+Android.armeabi-v7a=[  ]
+Android.x86=[  ]
+Android.x86_64=[  ]
+iOS.arm64=[  ]
+OSX.64=[  ]
+Server.32=[  ]
+Server.64=[  ]
+Windows.32=[  ]
+Windows.64=[  ]
+X11.32=[  ]
+X11.64=[  ]
+
+[general]
+
+singleton=false
+load_once=true
+symbol_prefix="godot_"
+reloadable=true

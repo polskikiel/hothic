@@ -1,0 +1,11 @@
+[package]
+name = "hothic"
+version = "0.1.0"
+authors = ["Knolip"]
+edition = "2018"
+
+[lib]
+crate-type = ["cdylib", "staticlib"]
+
+[dependencies]
+gdnative = "0.9.3"
