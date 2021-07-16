@@ -35,12 +35,17 @@ impl Game {
         // The `godot_print!` macro works like `println!` but prints to the Godot-editor
         // output tab as well.
         self.name = "Game".to_string();
+
+        let camera = _owner.get_node_as::<Camera>("Player").unwrap();
+
+        godot_print!("{}", camera.rotate()));
+
         godot_print!("{} is ready!", self.name);
     }
 
     // This function will be called in every frame
     #[export]
     unsafe fn _process(&self, _owner: &Node, delta: f64) {
-        godot_print!("Inside {} _process(), delta is {}", self.name, delta);
+        // godot_print!("Inside {} _process(), delta is {}", self.name, delta);
     }
 }
