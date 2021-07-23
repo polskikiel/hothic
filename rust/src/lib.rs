@@ -1,5 +1,5 @@
 mod game;
-mod camera;
+// mod camera;
 
 use gdnative::prelude::{godot_init, InitHandle};
 

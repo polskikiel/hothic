@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://addons/zylann.hterrain/hterrain.gd" type="Script" id=1]
 [ext_resource path="res://addons/zylann.hterrain/hterrain_texture_set.gd" type="Script" id=2]
@@ -9,16 +9,29 @@
 [ext_resource path="res://assets/terrain/files/slot1_albedo_bump.packed_tex" type="Texture" id=7]
 [ext_resource path="res://assets/terrain/files/slot0_albedo_bump.packed_tex" type="Texture" id=8]
 [ext_resource path="res://assets/terrain/files/slot0_normal_roughness.packed_tex" type="Texture" id=9]
+[ext_resource path="res://models/Caves/cave3.obj" type="ArrayMesh" id=10]
+[ext_resource path="res://assets/textures/cloud_layers_1k.hdr" type="Texture" id=11]
+[ext_resource path="res://addons/zylann.hterrain/tools/icons/icon_detail_layer_node.svg" type="Texture" id=13]
+[ext_resource path="res://addons/zylann.hterrain/hterrain_detail_layer.gd" type="Script" id=14]
 
 [sub_resource type="Resource" id=1]
 script = ExtResource( 2 )
 mode = 0
 textures = [ [ ExtResource( 8 ), ExtResource( 7 ), ExtResource( 5 ) ], [ ExtResource( 9 ), ExtResource( 6 ), ExtResource( 4 ) ] ]
 
+[sub_resource type="PanoramaSky" id=2]
+panorama = ExtResource( 11 )
+
+[sub_resource type="Environment" id=3]
+background_mode = 2
+background_sky = SubResource( 2 )
+ambient_light_color = Color( 0.509804, 0.756863, 0.698039, 1 )
+
 [node name="Spatial" type="Spatial"]
 
 [node name="HTerrain" type="Spatial" parent="."]
 script = ExtResource( 1 )
+map_scale = Vector3( 2, 2, 2 )
 _terrain_data = ExtResource( 3 )
 chunk_size = 32
 collision_enabled = true
@@ -32,3 +45,21 @@ shader_params/u_ground_uv_scale = 20
 shader_params/u_depth_blending = true
 shader_params/u_triplanar = false
 shader_params/u_tile_reduction = Plane( 0, 0, 0, 0 )
+
+[node name="HTerrainDetailLayer" type="Spatial" parent="HTerrain"]
+script = ExtResource( 14 )
+__meta__ = {
+"_editor_icon": ExtResource( 13 )
+}
+shader_params/u_globalmap_tint_bottom = null
+shader_params/u_globalmap_tint_top = null
+shader_params/u_bottom_ao = null
+shader_params/u_instance_scale = Vector3( 1, 1, 1 )
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource( 3 )
+
+[node name="cave3" type="MeshInstance" parent="."]
+transform = Transform( 0.0568449, 0, -0.272196, 0, 0.278069, 0, 0.272196, 0, 0.0568449, 58.2128, -4.51181, 162.886 )
+mesh = ExtResource( 10 )
+material/0 = null
