@@ -4,9 +4,9 @@ use std::io;
 use std::ops::Deref;
 
 #[derive(NativeClass)]
-#[inherit(Node)]
+#[inherit(Spatial)]
 #[register_with(Self::register_builder)]
-pub struct Game {
+pub struct Player {
     name: String,
     player_init_vector: Vector3,
     player_init_zoom: f64,
@@ -16,16 +16,17 @@ pub struct Game {
 // __One__ `impl` block can have the `#[methods]` attribute, which will generate
 // code to automatically bind any exported methods to Godot.
 #[methods]
-impl Game {
+impl Player {
+
     // Register the builder for methods, properties and/or signals.
     fn register_builder(_builder: &ClassBuilder<Self>) {
-        godot_print!("Game builder is registered!");
+        godot_print!("Player builder is registered!");
     }
 
     /// The "constructor" of the class.
-    fn new(_owner: &Node) -> Self {
-        godot_print!("Game is created!");
-        Game {
+    fn new(_owner: &Spatial) -> Self {
+        godot_print!("Player is created!");
+        Player {
             name: "".to_string(),
             player_init_vector: Vector3::new(0.0, 0.0, 0.0),
             player_init_zoom: 0.0,
@@ -38,8 +39,8 @@ impl Game {
     // Instead they are "attached" to the parent object, called the "owner".
     // The owner is passed to every single exposed method.
     #[export]
-    unsafe fn _ready(&mut self, _owner: &Node) {
-        self.name = "Game".to_string();
+    unsafe fn _ready(&mut self, _owner: &Spatial) {
+        self.name = "Player".to_string();
 
         // self.player_wrapper = unsafe {
         //     _owner.get_node_as::<Spatial>("PlayerWrapper").unwrap().claim().into()
@@ -48,15 +49,15 @@ impl Game {
         // self.player_init_zoom = self.player_wrapper.into().transform().length();
         // let player_transform = self.player_wrapper.into().transform();
         // let player_position = player_transform.origin;
-        //
-        // godot_print!("{} is ready!", player_position);
+
+        godot_print!("{} is ready!", self.name);
     }
 
     // This function will be called in every frame
     #[export]
-    unsafe fn _process(&self, _owner: &Node, delta: f64) {
-        // let input = Input::godot_singleton();
-        //
+    unsafe fn _process(&self, _owner: &Spatial, delta: f64) {
+        let input = Input::godot_singleton();
+
         // let player_transform = self.player_wrapper.cast().into().transform();
         // let player_position = player_transform.origin;
         //

@@ -35,3 +35,4 @@ rust/debug/
 target/
 tramp
 vendor
+.idea
