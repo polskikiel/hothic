@@ -1,7 +1,5 @@
 use gdnative::api::*;
 use gdnative::prelude::*;
-use std::io;
-use std::ops::Deref;
 
 #[derive(NativeClass)]
 #[inherit(Node)]

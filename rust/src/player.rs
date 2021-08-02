@@ -1,16 +1,11 @@
 use gdnative::api::*;
 use gdnative::prelude::*;
-use std::io;
-use std::ops::Deref;
 
 #[derive(NativeClass)]
 #[inherit(Spatial)]
 #[register_with(Self::register_builder)]
 pub struct Player {
     name: String,
-    player_init_vector: Vector3,
-    player_init_zoom: f64,
-    player_wrapper: Ref<Spatial>,
 }
 
 // __One__ `impl` block can have the `#[methods]` attribute, which will generate
@@ -28,9 +23,8 @@ impl Player {
         godot_print!("Player is created!");
         Player {
             name: "".to_string(),
-            player_init_vector: Vector3::new(0.0, 0.0, 0.0),
-            player_init_zoom: 0.0,
-            player_wrapper: Spatial::new().into_shared(),
+            // camera: Camera::new(),
+            // playerChar: Spatial::new().
         }
     }
 
@@ -42,13 +36,15 @@ impl Player {
     unsafe fn _ready(&mut self, _owner: &Spatial) {
         self.name = "Player".to_string();
 
-        // self.player_wrapper = unsafe {
-        //     _owner.get_node_as::<Spatial>("PlayerWrapper").unwrap().claim().into()
+        // let player_char: TRef<Spatial> = unsafe {
+        //     _owner.get_node_as::<Spatial>("PlayerChar").unwrap()
         // };
-        // self.player_init_vector = self.player_wrapper.into().transform();
-        // self.player_init_zoom = self.player_wrapper.into().transform().length();
-        // let player_transform = self.player_wrapper.into().transform();
-        // let player_position = player_transform.origin;
+        // player_wrapper.
+
+        // self.player_init_vector = _owner.translation();
+        // self.player_init_zoom = player_wrapper.transform().length();
+        let player_transform = _owner.transform();
+        let player_position = player_transform.origin;
 
         godot_print!("{} is ready!", self.name);
     }
@@ -58,23 +54,21 @@ impl Player {
     unsafe fn _process(&self, _owner: &Spatial, delta: f64) {
         let input = Input::godot_singleton();
 
-        // let player_transform = self.player_wrapper.cast().into().transform();
-        // let player_position = player_transform.origin;
-        //
-        // if Input::is_action_pressed(&input, "ui_right") {
-        //     player_position.x += 1.0
-        // }
-        // if Input::is_action_pressed(&input, "ui_left") {
-        //     player_position.x -= 1.0
-        // }
-        // if Input::is_action_pressed(&input, "ui_down") {
-        //     player_position.y += 1.0
-        // }
-        // if Input::is_action_pressed(&input, "ui_up") {
-        //     player_position.y -= 1.0
-        // }
-        //
-        //
-        // self.player_wrapper.set_transform(player_position);
+        let player_transform = _owner.transform();
+        let mut player_position = player_transform.origin;
+
+        if Input::is_action_pressed(&input, "ui_right") {
+            player_position.x -= 1.0
+        }
+        if Input::is_action_pressed(&input, "ui_left") {
+            player_position.x += 1.0
+        }
+        if Input::is_action_pressed(&input, "ui_down") {
+            player_position.z -= 1.0
+        }
+        if Input::is_action_pressed(&input, "ui_up") {
+            player_position.z += 1.0
+        }
+        _owner.set_translation(player_position);
     }
 }

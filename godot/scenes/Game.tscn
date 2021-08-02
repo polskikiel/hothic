@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://native/Game.gdns" type="Script" id=1]
 [ext_resource path="res://scenes/Map.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/Player.tscn" type="PackedScene" id=3]
 [ext_resource path="res://models/tiles.tres" type="MeshLibrary" id=4]
+[ext_resource path="res://native/PlayerCamera.gdns" type="Script" id=5]
 
 [node name="Game" type="Node"]
 script = ExtResource( 1 )
@@ -11,14 +12,14 @@ script = ExtResource( 1 )
 [node name="PlayerWrapper" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.24, 0, 0 )
 
-[node name="Spatial" type="Spatial" parent="PlayerWrapper"]
-
-[node name="PlayerChar" parent="PlayerWrapper/Spatial" instance=ExtResource( 3 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 37.1347, 0.00981402, 56.26 )
-
-[node name="Player" type="Camera" parent="PlayerWrapper"]
+[node name="PlayerCamera" type="Camera" parent="PlayerWrapper"]
 transform = Transform( -1, -7.6194e-09, 8.70901e-08, 0, 0.996195, 0.0871557, -8.74228e-08, 0.0871557, -0.996195, 37.0708, 2.42337, 52.9094 )
 fov = 71.9572
+far = 1246.8
+script = ExtResource( 5 )
+
+[node name="PlayerChar" parent="PlayerWrapper" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 37.1347, 0.00981402, 56.26 )
 
 [node name="MapWrapper" type="Spatial" parent="."]
 
