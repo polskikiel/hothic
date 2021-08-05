@@ -1,13 +1,9 @@
 mod game;
 mod player;
 mod player_camera;
+mod common;
 
 use gdnative::prelude::{godot_init, InitHandle};
-
-lazy_static! {
-    static ref GAMEDATA: gamedata::data::GameDataS =
-        gamedata::data::load_data("./src/assets/data.json".to_string());
-}
 
 // Function that registers all exposed classes to Godot
 fn init(handle: InitHandle) {

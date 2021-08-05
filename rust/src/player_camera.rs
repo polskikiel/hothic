@@ -1,12 +1,16 @@
 use gdnative::api::*;
 use gdnative::prelude::*;
-use crate::player::*;
+use crate::common::types::*;
+use crate::common::config::*;
+use crate::common::vars::*;
 
 #[derive(NativeClass)]
 #[inherit(Camera)]
 #[register_with(Self::register_builder)]
 pub struct PlayerCamera {
     name: String,
+    gravity: f32,
+    player_speed: f32,
 }
 
 // __One__ `impl` block can have the `#[methods]` attribute, which will generate
@@ -23,7 +27,9 @@ impl PlayerCamera {
     fn new(_owner: &Camera) -> Self {
         godot_print!("PlayerCamera is created!");
         PlayerCamera {
-            name: "".to_string(),
+            name: "PlayerCamera".to_string(),
+            gravity: 0.0,
+            player_speed: 0.0,
         }
     }
 
@@ -33,19 +39,13 @@ impl PlayerCamera {
     // The owner is passed to every single exposed method.
     #[export]
     unsafe fn _ready(&mut self, _owner: &Camera) {
-        self.name = "PlayerCamera".to_string();
+        let cfg: GameConfig = load_config(CONFIG_PATH.to_string());
 
-        // let player_char: TRef<Camera> = unsafe {
-        //     _owner.get_node_as::<Camera>("PlayerCameraChar").unwrap()
-        // };
-        // player_wrapper.
-
-        // self.player_init_vector = _owner.translation();
-        // self.player_init_zoom = player_wrapper.transform().length();
-        let player_transform = _owner.transform();
-        let player_position = player_transform.origin;
+        self.gravity = cfg.gravity;
+        self.player_speed = cfg.player_speed;
 
         godot_print!("{} is ready!", self.name);
+        godot_print!("{} speed", self.player_speed);
     }
 
     // This function will be called in every frame
@@ -57,16 +57,22 @@ impl PlayerCamera {
         let mut player_position = player_transform.origin;
 
         if Input::is_action_pressed(&input, "ui_right") {
-            player_position.x -= common::PLAYER_SPEED
+            player_position.x -= self.player_speed
         }
         if Input::is_action_pressed(&input, "ui_left") {
-            player_position.x += 1.0
+            player_position.x += self.player_speed
         }
         if Input::is_action_pressed(&input, "ui_down") {
-            player_position.z -= 1.0
+            player_position.z -= self.player_speed
         }
         if Input::is_action_pressed(&input, "ui_up") {
-            player_position.z += 1.0
+            player_position.z += self.player_speed
+        }
+        if Input::is_action_pressed(&input, "jump") {
+            player_position.y += self.player_speed;
+        }
+        if Input::is_action_pressed(&input, "crouch") {
+            player_position.y -= self.player_speed;
         }
         _owner.set_translation(player_position);
     }
